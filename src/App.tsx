@@ -233,7 +233,7 @@ export default function App() {
         <div style={{ maxWidth: 860, margin: "0 auto" }}>
           <STitle>Галерея</STitle>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(240px,1fr))", gap: 14 }}>
-          {["public/Screenshot 2026-05-13 at 17.50.31.png"].map((photo, i) => (
+          {["Screenshot 2026-05-13 at 17.50.31.png"].map((photo, i) => (
   <div key={i} className="gallery-item" style={{
     borderRadius: 12, aspectRatio: "4/3",
     overflow: "hidden", border: `1px solid ${C.border}`,
