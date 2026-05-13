@@ -30,22 +30,82 @@ const STYLES = [
 ];
 
 const PRICES = [
-  { title: "Пробне заняття", price: "350 грн", per: "", desc: "Одне заняття для знайомства зі студією", features: ["1 заняття", "Будь-який напрямок", "Без зобов'язань"], hot: false },
-  { title: "Абонемент", price: "1000 грн", per: "/місяць", desc: "8 занять — найпопулярніший вибір", features: ["8 занять на місяць", "Один напрямок", "Знижка 20%", "Гнучкий розклад"], hot: true },
-  { title: "Необмежений", price: "1500 грн", per: "/місяць", desc: "Для справжніх танцюристів", features: ["Необмежені заняття", "Всі напрямки", "Пріоритетний запис", "Безкоштовні майстер-класи"], hot: false },
+  { title: "Пробне заняття", price: "150 грн", per: "", desc: "Одне заняття для знайомства зі студією", features: ["1 заняття", "Будь-який напрямок", "Без зобов'язань"], hot: false },
+  { title: "Абонемент", price: "800 грн", per: "/місяць", desc: "8 занять — найпопулярніший вибір", features: ["8 занять на місяць", "Один напрямок", "Знижка 20%", "Гнучкий розклад"], hot: true },
+  { title: "Необмежений", price: "1200 грн", per: "/місяць", desc: "Для справжніх танцюристів", features: ["Необмежені заняття", "Всі напрямки", "Пріоритетний запис", "Безкоштовні майстер-класи"], hot: false },
 ];
 
-const GALLERY_EMOJIS = ["🩰", "🎵", "💃", "🕺", "⭐", "🎭"];
-const GALLERY_COLORS = [
-  ["#2d1b4e","#1a0d2e"],["#1a2d1a","#0d1f0d"],["#2d1a1a","#1f0d0d"],
-  ["#1a1a2d","#0d0d1f"],["#2d2a1a","#1f1c0d"],["#1a2d2d","#0d1f1f"],
+const GALLERIES = [
+  {
+    id: 1,
+    name: "Фото студії",
+    cover: "studio_cover.jpg",
+    images: [
+      "studio_1.jpg",
+      "studio_2.jpg",
+      "studio_3.jpg",
+      "studio_4.jpg",
+      "studio_5.jpg",
+    ],
+  },
+  {
+    id: 2,
+    name: "Фото учнів",
+    cover: "students_cover.jpg",
+    images: [
+      "students_1.jpg",
+      "students_2.jpg",
+      "students_3.jpg",
+      "students_4.jpg",
+      "students_5.jpg",
+      "students_6.jpg",
+      "students_7.jpg",
+      "students_8.jpg",
+      "students_9.jpg",
+      "students_10.jpg",
+    ],
+  },
+  {
+    id: 3,
+    name: "Фото тренерів",
+    cover: "teachers_cover.jpg",
+    images: [
+      "teachers_1.jpg",
+      "teachers_2.jpg",
+      "teachers_3.jpg",
+      "teachers_4.jpg",
+    ],
+  },
+  {
+    id: 4,
+    name: "Змагання та виступи",
+    cover: "events_cover.jpg",
+    images: [
+      "events_1.jpg",
+      "events_2.jpg",
+      "events_3.jpg",
+      "events_4.jpg",
+      "events_5.jpg",
+      "events_6.jpg",
+      "events_7.jpg",
+      "events_8.jpg",
+      "events_9.jpg",
+      "events_10.jpg",
+    ],
+  },
 ];
+
+const GALLERY_EMOJIS = ["🩰", "🎵", "💃", "🕺", "⭐", "🎭", "🏆", "🌟", "🎭", "✨"];
+const PLACEHOLDER_COLORS = ["#2d1b4e","#1a2d1a","#2d1a1a","#1a1a2d"];
+const GALLERY_COLORS = [["#2d1b4e","#1a0d2e"],["#1a2d1a","#0d1f0d"],["#2d1a1a","#1f0d0d"],["#1a1a2d","#0d0d1f"]];
 
 export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const [form, setForm] = useState({ name: "", phone: "", age: "", style: "" });
   const [status, setStatus] = useState("idle");
   const [webhookUrl, setWebhookUrl] = useState("");
+  const [lightbox, setLightbox] = useState(null); // { galleryId, index }
+
   const [showCfg, setShowCfg] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -233,19 +293,68 @@ export default function App() {
         <div style={{ maxWidth: 860, margin: "0 auto" }}>
           <STitle>Галерея</STitle>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(240px,1fr))", gap: 14 }}>
-          {["Screenshot 2026-05-13 at 17.50.31.png"].map((photo, i) => (
-  <div key={i} className="gallery-item" style={{
-    borderRadius: 12, aspectRatio: "4/3",
-    overflow: "hidden", border: `1px solid ${C.border}`,
-  }}>
-    <img
-      src={`/${photo}`}
-      alt={`Фото студії ${i + 1}`}
-      style={{ width: "100%", height: "100%", objectFit: "cover" }}
-    />
-  </div>
-))}
+            {GALLERY_COLORS.map(([c1,c2], i) => (
+              <div key={i} className="gallery-item" onClick={() => setLightbox(i)} style={{
+                background: `linear-gradient(135deg, ${c1}, ${c2})`,
+                borderRadius: 12, aspectRatio: "4/3", border: `1px solid ${C.border}`,
+                display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+                gap: 10, cursor: "pointer", position: "relative", overflow: "hidden",
+              }}>
+                <div style={{ fontSize: 44 }}>{GALLERY_EMOJIS[i]}</div>
+                <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", fontStyle: "italic" }}>Фото зі студії</div>
+                <div style={{
+                  position: "absolute", inset: 0, background: "rgba(139,92,246,0.0)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  transition: "background 0.2s", fontSize: 28,
+                }} className="gallery-overlay">🔍</div>
+              </div>
+            ))}
           </div>
+
+          {/* LIGHTBOX */}
+          {lightbox !== null && (
+            <div onClick={() => setLightbox(null)} style={{
+              position: "fixed", inset: 0, zIndex: 9999,
+              background: "rgba(0,0,0,0.92)", backdropFilter: "blur(8px)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              padding: 24,
+            }}>
+              <div onClick={e => e.stopPropagation()} style={{ position: "relative", maxWidth: 860, width: "100%" }}>
+                {/* Закрити */}
+                <button onClick={() => setLightbox(null)} style={{
+                  position: "absolute", top: -44, right: 0,
+                  background: "rgba(255,255,255,0.1)", border: "none",
+                  color: "#fff", width: 36, height: 36, borderRadius: "50%",
+                  cursor: "pointer", fontSize: 18, display: "flex", alignItems: "center", justifyContent: "center",
+                }}>✕</button>
+
+                {/* Фото */}
+                <div style={{
+                  background: `linear-gradient(135deg, ${GALLERY_COLORS[lightbox][0]}, ${GALLERY_COLORS[lightbox][1]})`,
+                  borderRadius: 16, aspectRatio: "16/9",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontSize: 80, border: `1px solid ${C.border}`,
+                }}>
+                  {GALLERY_EMOJIS[lightbox]}
+                </div>
+
+                {/* Стрілки */}
+                <div style={{ display: "flex", justifyContent: "space-between", marginTop: 16 }}>
+                  <button onClick={() => setLightbox((lightbox - 1 + GALLERY_COLORS.length) % GALLERY_COLORS.length)}
+                    style={{ background: "rgba(255,255,255,0.1)", border: "none", color: "#fff", padding: "10px 20px", borderRadius: 30, cursor: "pointer", fontSize: 16 }}>
+                    ← Попереднє
+                  </button>
+                  <span style={{ color: C.muted, alignSelf: "center", fontSize: 13 }}>
+                    {lightbox + 1} / {GALLERY_COLORS.length}
+                  </span>
+                  <button onClick={() => setLightbox((lightbox + 1) % GALLERY_COLORS.length)}
+                    style={{ background: "rgba(255,255,255,0.1)", border: "none", color: "#fff", padding: "10px 20px", borderRadius: 30, cursor: "pointer", fontSize: 16 }}>
+                    Наступне →
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
           <p style={{ textAlign: "center", color: "#444", marginTop: 18, fontSize: 13 }}>
             * Замініть placeholder-зображення на реальні фото вашої студії
           </p>
