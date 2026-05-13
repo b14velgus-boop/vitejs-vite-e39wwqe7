@@ -233,17 +233,18 @@ export default function App() {
         <div style={{ maxWidth: 860, margin: "0 auto" }}>
           <STitle>Галерея</STitle>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(240px,1fr))", gap: 14 }}>
-            {GALLERY_COLORS.map(([c1,c2], i) => (
-              <div key={i} className="gallery-item" style={{
-                background: `linear-gradient(135deg, ${c1}, ${c2})`,
-                borderRadius: 12, aspectRatio: "4/3", border: `1px solid ${C.border}`,
-                display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-                gap: 10, cursor: "pointer",
-              }}>
-                <div style={{ fontSize: 44 }}>{GALLERY_EMOJIS[i]}</div>
-                <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", fontStyle: "italic" }}>Фото зі студії</div>
-              </div>
-            ))}
+          {["public/Screenshot 2026-05-13 at 17.50.31.png"].map((photo, i) => (
+  <div key={i} className="gallery-item" style={{
+    borderRadius: 12, aspectRatio: "4/3",
+    overflow: "hidden", border: `1px solid ${C.border}`,
+  }}>
+    <img
+      src={`/${photo}`}
+      alt={`Фото студії ${i + 1}`}
+      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+    />
+  </div>
+))}
           </div>
           <p style={{ textAlign: "center", color: "#444", marginTop: 18, fontSize: 13 }}>
             * Замініть placeholder-зображення на реальні фото вашої студії
